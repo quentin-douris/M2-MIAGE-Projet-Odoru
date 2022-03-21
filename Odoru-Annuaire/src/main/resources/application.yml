@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    config:
+      service-registry:
+        auto-registration:
+          register-management: on
+
+eureka:
+  instance:
+    hostname: localhost # indique que le serveur tourne en local
+    metadata-map:
+      prometheus.scrape: "true"
+      prometheus.path: "/actuator/prometheus"
+      prometheus.port: "${management.server.port}"
+
+  # Le serveur ne doit pas s'enregistrer lui meme (car on peut avoir une hierarchie de serveur Eureka qui s enregistre les un sur les autres)
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+# Configuration du serveur d'annuaire
+server:
+  port: 1111 # port du serveur
+
+logging:
+  level:
+    org.springframework.web: INFO # Choix du niveau de log affiche
+
+# Prometheus
+management:
+  endpoints:
+    web:
+      exposure:
+        include: env,health,info,metrics,loggers,mappings,prometheus
+
+

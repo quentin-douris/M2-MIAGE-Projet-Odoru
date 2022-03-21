@@ -1,0 +1,78 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.8'
+
+# Define services
+services:
+
+  # Database ServiceUtilisateur (Mysql)
+  mysql_utilisateur:
+    image: mysql:latest
+    ports:
+      - "3308:3306"
+    restart: always
+    container_name: odoru_mysql_utilisateur
+    environment:
+      MYSQL_DATABASE: utilisateur
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    networks:
+      - back
+
+  # Database ServiceBadge (Mysql)
+  mysql_badge:
+    image: mysql:latest
+    ports:
+      - "3309:3306"
+    restart: always
+    container_name: odoru_mysql_badge
+    environment:
+      MYSQL_DATABASE: badge
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    networks:
+      - back
+
+  # Database ServiceCours (Mongo)
+  mongo_cours:
+    image: mongo
+    ports:
+      - "27017:27017" # host is first, container is second.
+    restart: always
+    container_name: odoru_mongo_cours
+    #volumes:
+    #  - db-data-mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: odoru_mongo_cours
+    networks:
+      - back
+
+  # Database ServiceCompetition (Mongo)
+  mongo_competition:
+    image: mongo
+    ports:
+      - "27018:27017" # host is first, container is second.
+    restart: always
+    container_name: odoru_mongo_competition
+    #volumes:
+    #  - db-data-mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: odoru_mongo_competition
+    networks:
+      - back
+
+  # ZipKin
+  zipkin_tracing:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+
+# Networks to be created to facilitate communication between containers
+networks:
+  back:
