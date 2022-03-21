@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: odoruConfigServer
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/SpringProjetOdoru/odoruconfig.git
+          username: SpringProjetOdoru
+          password: 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
+          clone-on-start: true
+server:
+  port: 2222
+
