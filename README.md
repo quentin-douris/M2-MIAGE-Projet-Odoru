@@ -8,7 +8,7 @@ intervenants et de gérer l’assiduité des membres du club aux différents cou
 
 ## Architecture micro-services
 
-// insérer le schéma de l'architecture
+![Schéma d'architecture](https://user-images.githubusercontent.com/48246043/159720316-5382d66e-b36d-4225-bfb8-ff0e9522efec.png)
 
 ## Description des projets
 
