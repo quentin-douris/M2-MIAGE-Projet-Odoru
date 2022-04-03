@@ -4,6 +4,9 @@ import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
 
+/**
+ * Interface du service qui s'occupe de la gestion des Créneaux
+ */
 public interface CreneauService {
     /**
      * Ajoute un nouveau créneau à un cours dans le système

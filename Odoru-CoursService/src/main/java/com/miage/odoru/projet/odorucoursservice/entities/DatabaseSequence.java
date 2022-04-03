@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Objet qui représente la séquence utilisée pour générer un identifiant auto-incrément
+ */
 @Getter
 @Setter
 @Document(collection = "database_sequences")

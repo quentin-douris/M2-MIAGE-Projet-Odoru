@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service qui s'occupe de la gestion des Créneaux
+ */
 @Service
 public class CreneauServiceImpl implements CreneauService {
 
