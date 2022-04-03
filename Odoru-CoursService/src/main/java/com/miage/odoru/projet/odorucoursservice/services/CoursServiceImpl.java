@@ -1,9 +1,13 @@
 package com.miage.odoru.projet.odorucoursservice.services;
 
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
+import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
+import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
 import com.miage.odoru.projet.odorucoursservice.repositories.CoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CoursServiceImpl implements CoursService {
@@ -29,4 +33,5 @@ public class CoursServiceImpl implements CoursService {
     public Iterable<Cours> obtenirCours() {
         return this.coursRepository.findAll();
     }
+
 }
