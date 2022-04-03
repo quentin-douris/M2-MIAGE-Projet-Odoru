@@ -2,6 +2,7 @@ package com.miage.odoru.projet.odorucoursservice.entities;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,5 +25,5 @@ public class Creneau {
 
     private int numSalle;
 
-    private List<Participant> participants;
+    private List<Participant> participants = new ArrayList<>();
 }
