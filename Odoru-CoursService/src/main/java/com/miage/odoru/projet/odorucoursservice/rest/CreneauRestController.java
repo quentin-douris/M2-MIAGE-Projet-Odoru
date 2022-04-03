@@ -4,6 +4,8 @@ import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
 import com.miage.odoru.projet.odorucoursservice.services.CreneauService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/{idcours}/creneau")
 public class CreneauRestController {
+
+    Logger logger = LoggerFactory.getLogger(CreneauRestController.class);
+
     @Autowired
     CreneauService creneauService;
 
@@ -29,6 +34,7 @@ public class CreneauRestController {
         }
 
         // Ajoute le nouveau creneau dans le système
+        this.logger.info("Creneau : ajout d'un nouveau créneau pour le cours id : " + optionalCours.get().getId());
         return this.creneauService.ajouterCreneauCours(optionalCours.get(), creneau);
     }
 }
