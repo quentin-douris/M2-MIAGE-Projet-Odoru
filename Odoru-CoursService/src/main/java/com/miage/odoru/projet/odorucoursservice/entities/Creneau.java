@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Objet qui représente un créneau de cours dans la base de données NoSQL
+ */
 @Getter
 @Setter
 @NoArgsConstructor
