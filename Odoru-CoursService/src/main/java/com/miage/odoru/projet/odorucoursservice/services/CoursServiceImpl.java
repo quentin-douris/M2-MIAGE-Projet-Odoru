@@ -4,15 +4,23 @@ import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
 import com.miage.odoru.projet.odorucoursservice.repositories.CoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * Service qui s'occupe de la gestion des Cours
  */
 @Service
 public class CoursServiceImpl implements CoursService {
+
+    @Autowired
+    MongoOperations mongoOperations;
 
     @Autowired
     CoursRepository coursRepository;
@@ -56,5 +64,18 @@ public class CoursServiceImpl implements CoursService {
     @Override
     public void supprimeTousLesCours() {
         this.coursRepository.deleteAll();
+    }
+
+    /**
+     * Retourne tous les cours selon un identifiant de niveau
+     * @param idNiveau
+     * @return
+     */
+    @Override
+    public Iterable<Cours> obtenirCoursSelonNiveau(int idNiveau) {
+        // Recherche si le participant est déjà inscrit
+        return mongoOperations.query(Cours.class)
+                .matching(query(where("idNiveau").is(idNiveau)))
+                .all();
     }
 }

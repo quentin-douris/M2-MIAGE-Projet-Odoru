@@ -27,7 +27,14 @@ public class CoursRestController {
      * @return
      */
     @GetMapping
-    public Iterable<Cours> getAll() {
+    public Iterable<Cours> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau) {
+        // Retourne les cours selon leur niveau
+        if(idNiveau.isPresent()) {
+            this.logger.info("Cours : demande la liste de tous les cours selon un niveau.");
+            return this.coursService.obtenirCoursSelonNiveau(idNiveau.get());
+        }
+
+        // Retourne tous les cours enregistrés dans le système
         this.logger.info("Cours : demande la liste de tous les cours.");
         return this.coursService.obtenirCours();
     }

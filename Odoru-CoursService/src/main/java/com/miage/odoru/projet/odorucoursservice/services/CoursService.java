@@ -30,4 +30,11 @@ public interface CoursService {
      * Supprime tous les cours du système
      */
     void supprimeTousLesCours();
+
+    /**
+     * Retourne tous les cours selon un identifiant de niveau
+     * @param idNiveau
+     * @return
+     */
+    Iterable<Cours> obtenirCoursSelonNiveau(int idNiveau);
 }
