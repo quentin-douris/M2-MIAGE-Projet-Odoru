@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 public class Participant {
 
-    private int idEleve;
+    private long idEleve;
 
-    private boolean isPresent;
+    private boolean isPresent = false;
 }

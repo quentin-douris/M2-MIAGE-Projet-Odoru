@@ -28,7 +28,7 @@ public class CreneauRestController {
      */
     @PostMapping
     public Cours postOne(@PathVariable("idcours") Optional<Cours> optionalCours, @PathVariable("idcours") Long idCours, @RequestBody Creneau creneau) throws CoursInconnuException {
-        // Si le cours n'existe pas dans le système
+        // Vérifie que le cours existe
         if(optionalCours.isEmpty()) {
             throw new CoursInconnuException(idCours);
         }

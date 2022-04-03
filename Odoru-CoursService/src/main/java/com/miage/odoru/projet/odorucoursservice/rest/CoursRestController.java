@@ -1,12 +1,15 @@
 package com.miage.odoru.projet.odorucoursservice.rest;
 
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
+import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
 import com.miage.odoru.projet.odorucoursservice.services.CoursService;
 import com.miage.odoru.projet.odorucoursservice.services.SequenceGeneratorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
@@ -37,7 +40,36 @@ public class CoursRestController {
     @PostMapping
     public Cours postOne(@RequestBody Cours cours) {
         this.logger.info("Cours : ajoute un nouveau cours dans le système.");
+        // Récupère l'identifiant du cours selon la séquence
         cours.setId(sequenceGeneratorService.generateSequence(Cours.SEQUENCE_NAME));
         return this.coursService.ajouterCours(cours);
+    }
+
+    /**
+     * Supprime un cours dans le système
+     * @param optionalCours
+     * @param idCours
+     * @throws CoursInconnuException
+     */
+    @DeleteMapping("/{id}")
+    public void deleteOne(@PathVariable("id") Optional<Cours> optionalCours, @PathVariable("id") Long idCours) throws CoursInconnuException {
+        // Vérifie l'existance du cours
+        if(optionalCours.isEmpty()) {
+            throw new CoursInconnuException(idCours);
+        }
+
+        // Supprime le cours du système
+        this.logger.info("Cours : suppression du cours " + idCours + " du système");
+        this.coursService.supprimerCours(optionalCours.get());
+    }
+
+    /**
+     * Supprime tous les cours dans le système
+     */
+    @DeleteMapping
+    public void deleteAll() {
+        // Supprime le cours du système
+        this.logger.info("Cours : suppression de tous les cours du système");
+        this.coursService.supprimeTousLesCours();
     }
 }
