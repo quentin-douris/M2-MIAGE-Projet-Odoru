@@ -1,13 +1,14 @@
 package com.miage.odoru.projet.odorucoursservice.services;
 
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
+import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
 import com.miage.odoru.projet.odorucoursservice.repositories.CoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Iterator;
 import java.util.Optional;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -74,8 +75,29 @@ public class CoursServiceImpl implements CoursService {
     @Override
     public Iterable<Cours> obtenirCoursSelonNiveau(int idNiveau) {
         // Recherche si le participant est déjà inscrit
-        return mongoOperations.query(Cours.class)
+        return this.mongoOperations.query(Cours.class)
                 .matching(query(where("idNiveau").is(idNiveau)))
                 .all();
+    }
+
+    /**
+     * Retourne tous les créneaux des enseignants par cours dispensés
+     * @param idEnseignant
+     * @return
+     */
+    @Override
+    public Iterable<Cours> obtenirCreneauxEnseignant(int idEnseignant) {
+        // Recherche les cours pour lequels l'enseignant à au moins un créneau
+        Iterable<Cours> coursFound = this.mongoOperations.query(Cours.class)
+                .matching(query(where("creneaux.idEnseignant").is(idEnseignant)))
+                .all();
+
+        // Supprime les créneaux qui ne sont pas ceux de l'enseignant
+        for (Iterator<Cours> coursIterator = coursFound.iterator(); coursIterator.hasNext();) {
+            Cours cours = coursIterator.next();
+            cours.getCreneaux().removeIf(creneau -> creneau.getIdEnseignant() != idEnseignant);
+        }
+
+        return coursFound;
     }
 }

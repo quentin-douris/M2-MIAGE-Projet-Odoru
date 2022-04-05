@@ -37,4 +37,12 @@ public interface CoursService {
      * @return
      */
     Iterable<Cours> obtenirCoursSelonNiveau(int idNiveau);
+
+    /**
+     * Retourne tous les créneaux des enseignants par cours dispensés
+     * @param idEnseignant
+     * @return
+     */
+    Iterable<Cours> obtenirCreneauxEnseignant(int idEnseignant);
+
 }

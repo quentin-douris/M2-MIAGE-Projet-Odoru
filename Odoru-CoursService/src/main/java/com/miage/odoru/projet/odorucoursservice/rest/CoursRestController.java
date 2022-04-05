@@ -27,11 +27,17 @@ public class CoursRestController {
      * @return
      */
     @GetMapping
-    public Iterable<Cours> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau) {
+    public Iterable<Cours> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant) {
         // Retourne les cours selon leur niveau
         if(idNiveau.isPresent()) {
-            this.logger.info("Cours : demande la liste de tous les cours selon un niveau.");
+            this.logger.info("Cours : demande la liste de tous les cours selon le niveau : " + idNiveau);
             return this.coursService.obtenirCoursSelonNiveau(idNiveau.get());
+        }
+
+        // Retourne les cours d'un enseignant
+        if(idEnseignant.isPresent()) {
+            this.logger.info("Cours : demande la liste de tous les créneaux de cours dispensés par l'enseignant : " + idEnseignant);
+            return this.coursService.obtenirCreneauxEnseignant(idEnseignant.get());
         }
 
         // Retourne tous les cours enregistrés dans le système
