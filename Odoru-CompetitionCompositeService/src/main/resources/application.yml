@@ -1,0 +1,9 @@
+spring:
+  #Configuration de l'application
+  application:
+    name: odoruCompetitionCompositeService
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://127.0.0.1:2222
+
