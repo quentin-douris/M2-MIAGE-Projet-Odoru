@@ -29,11 +29,19 @@ public class CoursUtilisateurRestController {
     @GetMapping
     public Iterable<CoursTransient> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant) {
         // Retourne les cours selon leur niveau avec leur détail
+        if(idNiveau.isPresent()) {
+            this.logger.info("CoursComposite : demande la liste de tous les cours détaillé selon le niveau : " + idNiveau);
+            return this.coursUtilisateurService.obtenirCoursDetailSelonNiveau(idNiveau.get());
+        }
 
         // Retourne les cours d'un enseignant avec leur détail
+        if(idEnseignant.isPresent()) {
+            this.logger.info("CoursComposite : demande la liste de tous les cours détaillé pour un enseignant : " + idEnseignant);
+            return this.coursUtilisateurService.obtenirCreneauxDetailEnseignant(idEnseignant.get());
+        }
 
         // Retourne tous les cours enregistrés dans le système avec leur détail
-        this.logger.info("Cours : demande la liste de tous les cours.");
+        this.logger.info("CoursComposite : demande la liste de tous les cours détaillé.");
         return this.coursUtilisateurService.obtenirCoursDetail();
     }
 

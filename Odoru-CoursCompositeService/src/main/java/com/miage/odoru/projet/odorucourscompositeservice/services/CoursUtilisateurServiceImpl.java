@@ -22,4 +22,24 @@ public class CoursUtilisateurServiceImpl implements CoursUtilisateurService {
     public Iterable<CoursTransient> obtenirCoursDetail() {
         return this.coursUtilisateurRepository.getAllCoursDetail();
     }
+
+    /**
+     * Retourne tous les cours détaillés selon un identifiant de niveau
+     * @param idNiveau
+     * @return
+     */
+    @Override
+    public Iterable<CoursTransient> obtenirCoursDetailSelonNiveau(int idNiveau) {
+        return this.coursUtilisateurRepository.getAllCoursDetailByIdNiveau(idNiveau);
+    }
+
+    /**
+     * Retourne tous les cours avec les créneaux d'un enseignant
+     * @param idEnseignant
+     * @return
+     */
+    @Override
+    public Iterable<CoursTransient> obtenirCreneauxDetailEnseignant(int idEnseignant) {
+        return this.coursUtilisateurRepository.getAllCreneauDetailByIdEnseignant(idEnseignant);
+    }
 }

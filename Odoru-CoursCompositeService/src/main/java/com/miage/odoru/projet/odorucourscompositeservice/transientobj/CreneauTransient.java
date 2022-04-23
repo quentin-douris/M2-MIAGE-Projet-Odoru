@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Transient object CreneauTransient (utilisé uniquement pour la communication)
  */
@@ -22,9 +19,5 @@ public class CreneauTransient {
 
     private int duree;
 
-    private UtilisateurTransient enseignant;
-
     private int numSalle;
-
-    private List<ParticipantTransient> participants = new ArrayList<>();
 }

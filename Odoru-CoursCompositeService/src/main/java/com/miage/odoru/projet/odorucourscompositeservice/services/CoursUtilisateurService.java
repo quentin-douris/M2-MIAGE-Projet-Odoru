@@ -11,4 +11,18 @@ public interface CoursUtilisateurService {
      * @return
      */
     Iterable<CoursTransient> obtenirCoursDetail();
+
+    /**
+     * Retourne tous les cours détaillés selon un identifiant de niveau
+     * @param idNiveau
+     * @return
+     */
+    Iterable<CoursTransient> obtenirCoursDetailSelonNiveau(int idNiveau);
+
+    /**
+     * Retourne tous les cours avec les créneaux d'un enseignant
+     * @param idEnseignant
+     * @return
+     */
+    Iterable<CoursTransient> obtenirCreneauxDetailEnseignant(int idEnseignant);
 }

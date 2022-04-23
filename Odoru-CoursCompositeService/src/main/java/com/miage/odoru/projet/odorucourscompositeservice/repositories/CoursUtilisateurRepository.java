@@ -13,4 +13,18 @@ public interface CoursUtilisateurRepository {
      * @return
      */
     Iterable<CoursTransient> getAllCoursDetail();
+
+    /**
+     * Recherche tous les cours selon le niveau et les utilisateurs pour construire un cours avec son détail
+     * @param idNiveau
+     * @return
+     */
+    Iterable<CoursTransient> getAllCoursDetailByIdNiveau(int idNiveau);
+
+    /**
+     * Recherche tous les cours avec les créneaux d'un enseignant pour construire un cours avec son détail
+     * @param idEnseignant
+     * @return
+     */
+    Iterable<CoursTransient> getAllCreneauDetailByIdEnseignant(int idEnseignant);
 }
