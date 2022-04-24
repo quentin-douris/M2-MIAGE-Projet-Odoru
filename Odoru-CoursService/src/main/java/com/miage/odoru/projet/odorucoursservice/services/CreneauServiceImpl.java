@@ -1,16 +1,17 @@
 package com.miage.odoru.projet.odorucoursservice.services;
 
+import com.miage.odoru.projet.odorucoursservice.clients.OdoruUtilisateurServiceClient;
+import com.miage.odoru.projet.odorucoursservice.definitions.Utilisateur;
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.EnseignantInapteException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.PlanificationCreneauException;
 import com.miage.odoru.projet.odorucoursservice.repositories.CoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Optional;
@@ -24,6 +25,9 @@ public class CreneauServiceImpl implements CreneauService {
     @Autowired
     CoursRepository coursRepository;
 
+    @Autowired
+    OdoruUtilisateurServiceClient odoruUtilisateurServiceClient;
+
     /**
      * Ajoute un nouveau créneau à un cours dans le système
      * @param cours
@@ -33,7 +37,7 @@ public class CreneauServiceImpl implements CreneauService {
      * @throws PlanificationCreneauException
      */
     @Override
-    public Cours ajouterCreneauCours(Cours cours, Creneau creneau) throws CoursInconnuException, PlanificationCreneauException {
+    public Cours ajouterCreneauCours(Cours cours, Creneau creneau) throws CoursInconnuException, PlanificationCreneauException, EnseignantInapteException {
         // Recherche le cours
         Optional<Cours> optionalCours = this.coursRepository.findById(cours.getId());
 
@@ -56,6 +60,12 @@ public class CreneauServiceImpl implements CreneauService {
         long difference = ChronoUnit.DAYS.between(today.toInstant(), dateCreneau.toInstant());
         if(difference < 6) {
             throw new PlanificationCreneauException();
+        }
+
+        // Vérifie que l'enseignant et apte à créer ce créneau de cours
+        Utilisateur enseignant = this.odoruUtilisateurServiceClient.getUtilisateurById((long)creneau.getIdEnseignant());
+        if(enseignant.getIdNiveau() < cours.getIdNiveau()) {
+            throw new EnseignantInapteException(enseignant.getIdNiveau(), cours.getIdNiveau());
         }
 
         // Ajoute le créneau au cours

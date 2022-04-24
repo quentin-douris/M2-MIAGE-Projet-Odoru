@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Interface qui permet d'interagir avec le service Cours
+ * Interface qui permet d'interagir avec le service Badge
  */
 @FeignClient(name = "odoruBadgeService")
 public interface OdoruBadgeServiceClient {

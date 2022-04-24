@@ -3,6 +3,7 @@ package com.miage.odoru.projet.odorucoursservice.rest;
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.EnseignantInapteException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.PlanificationCreneauException;
 import com.miage.odoru.projet.odorucoursservice.services.CreneauService;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class CreneauRestController {
      * @return
      */
     @PostMapping
-    public Cours postOne(@PathVariable("idcours") Optional<Cours> optionalCours, @PathVariable("idcours") Long idCours, @RequestBody Creneau creneau) throws CoursInconnuException, PlanificationCreneauException {
+    public Cours postOne(@PathVariable("idcours") Optional<Cours> optionalCours, @PathVariable("idcours") Long idCours, @RequestBody Creneau creneau) throws CoursInconnuException, PlanificationCreneauException, EnseignantInapteException {
         // Vérifie que le cours existe
         if(optionalCours.isEmpty()) {
             throw new CoursInconnuException(idCours);
