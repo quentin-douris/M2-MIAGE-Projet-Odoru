@@ -23,6 +23,6 @@ public class Cours implements Serializable {
 
     private int idNiveau;
 
-    private List<Creneau> creneaux = new ArrayList<>();
+    private List<Creneau> creneaux = new ArrayList<Creneau>();
 }
 
