@@ -4,6 +4,7 @@ import com.miage.odoru.projet.odorucoursservice.clients.OdoruUtilisateurServiceC
 import com.miage.odoru.projet.odorucoursservice.definitions.Utilisateur;
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
+import com.miage.odoru.projet.odorucoursservice.entities.Participant;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.EnseignantInapteException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.PlanificationCreneauException;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -77,6 +80,19 @@ public class CreneauServiceImpl implements CreneauService {
         } else {
             long creneauId = 1;
             creneau.setId(creneauId);
+        }
+
+        // Ajoute tous les utilisateurs qui ont le niveau pour ce créneau (sauf l'enseignant)
+        Iterable<Utilisateur> utilisateurList = this.odoruUtilisateurServiceClient.getUtilisateurByIdNiveau(cours.getIdNiveau());
+        for (Iterator<Utilisateur> utilisateurIterator = utilisateurList.iterator(); utilisateurIterator.hasNext();) {
+            Utilisateur utilisateur = utilisateurIterator.next();
+            if(utilisateur.getId() != enseignant.getId()) {
+                // Créer un nouveau participant
+                Participant newParticipant = new Participant();
+                newParticipant.setIdEleve(utilisateur.getId());
+                // Ajout le participant au cours
+                creneau.getParticipants().add(newParticipant);
+            }
         }
 
         // Ajoute le nouveau créneau au cours
