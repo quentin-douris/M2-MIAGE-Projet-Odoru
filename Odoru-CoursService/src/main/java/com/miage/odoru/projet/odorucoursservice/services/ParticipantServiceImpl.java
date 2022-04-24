@@ -1,23 +1,20 @@
 package com.miage.odoru.projet.odorucoursservice.services;
 
+import com.miage.odoru.projet.odorucoursservice.clients.OdoruBadgeServiceClient;
+import com.miage.odoru.projet.odorucoursservice.definitions.Badge;
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.entities.Participant;
-import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
-import com.miage.odoru.projet.odorucoursservice.exceptions.CreneauInconnuException;
-import com.miage.odoru.projet.odorucoursservice.exceptions.ParticipantDejaInscritException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.*;
 import com.miage.odoru.projet.odorucoursservice.repositories.CoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.ExecutableFindOperation;
 import org.springframework.data.mongodb.core.MongoOperations;
 
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,6 +27,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Autowired
     CoursRepository coursRepository;
+
+    @Autowired
+    OdoruBadgeServiceClient odoruBadgeServiceClient;
 
     /**
      * Ajoute un participant à un cours sur un créneau spécifique
@@ -81,4 +81,60 @@ public class ParticipantServiceImpl implements ParticipantService {
         return this.coursRepository.save(resultCreneau);
     }
 
+    /**
+     * Enregistre la participation d'un élève / membre à un cours dans le système
+     * @param cours
+     * @param idCreneau
+     * @param idBadge
+     * @throws CoursInconnuException
+     * @throws CreneauInconnuException
+     * @throws ParticipantNonInscrit
+     * @throws BadgeInconnuException
+     */
+    @Override
+    public void enregistrePresenceMembreCoursCreneau(Cours cours, Long idCreneau, Long idBadge) throws CoursInconnuException, CreneauInconnuException, ParticipantNonInscrit, BadgeInconnuException {
+        // Vérification des données qui concerne les propriétés d'un cours
+        Optional<Cours> optionalCours = this.coursRepository.findById(cours.getId());
+        if (optionalCours.isEmpty()) {
+            throw new CoursInconnuException(cours.getId());
+        }
+
+        // Recherche le créneau pour le cours
+        Cours resultCreneau = mongoOperations.query(Cours.class)
+                .matching(query(where("id").is(cours.getId()).and("creneaux.id").is(idCreneau)))
+                .firstValue();
+
+        if (resultCreneau == null) {
+            throw new CreneauInconnuException(cours.getId(), idCreneau);
+        }
+
+        // Recherche l'identifiant du participant auprès du service badge
+        Badge badge = this.odoruBadgeServiceClient.getIdUtilisateurByIdBadge(idBadge);
+
+        if(badge == null) {
+            throw new BadgeInconnuException(idBadge);
+        }
+
+        // Recherche si le participant est bien inscrit
+        Cours resultParticipant = mongoOperations.query(Cours.class)
+                .matching(query(where("id").is(cours.getId()).and("creneaux.id").is(idCreneau).and("creneaux.participants.idEleve").is(badge.getIdUtilisateur())))
+                .firstValue();
+
+        if(resultParticipant == null) {
+            throw new ParticipantNonInscrit(badge.getIdUtilisateur(), cours.getId(), idCreneau);
+        }
+
+        // Enregistre la participation du participant au cours sur le creneau
+        for (Creneau creneau : optionalCours.get().getCreneaux()) {
+            if(creneau.getId() == idCreneau) {
+                for(Participant participant : creneau.getParticipants()) {
+                    if(participant.getIdEleve() == badge.getIdUtilisateur()) {
+                        participant.setPresent(true);
+                    }
+                }
+            }
+        }
+
+        this.coursRepository.save(optionalCours.get());
+    }
 }
