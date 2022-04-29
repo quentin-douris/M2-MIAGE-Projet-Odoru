@@ -18,7 +18,7 @@ public class CompetitionNiveauRestController {
     CompetitionNiveauService competitionNiveauService;
 
     @GetMapping("/{idniveau}")
-    public CompetitionNiveau getResultat(@PathVariable("idniveau") Optional<Integer> idNiveau) {
+    public CompetitionNiveau getCompetitionsParNiveau(@PathVariable("idniveau") Optional<Integer> idNiveau) {
         return this.competitionNiveauService.getCompetitionNiveauStats(idNiveau.get());
     }
 }
