@@ -1,9 +1,12 @@
 package com.miage.odoru.projet.odorustatistiqueservice;
 
+import com.miage.odoru.projet.odorustatistiqueservice.repositories.CoursStatistiqueRepository;
+import com.miage.odoru.projet.odorustatistiqueservice.repositories.CoursStatistiquesRepositoryImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 
@@ -14,8 +17,20 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class OdoruStatistiqueServiceApplication {
 
+    /**
+     * Programme principal
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(OdoruStatistiqueServiceApplication.class, args);
     }
 
+    /**
+     * Factory de bean pour gérer des cours-statistique
+     * @return Repository de gestion de cours-statistique
+     */
+    @Bean
+    public CoursStatistiqueRepository coursUtilisateurRepository() {
+        return new CoursStatistiquesRepositoryImpl();
+    }
 }
