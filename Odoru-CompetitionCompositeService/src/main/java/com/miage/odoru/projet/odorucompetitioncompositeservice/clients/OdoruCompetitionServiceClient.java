@@ -20,6 +20,27 @@ public interface OdoruCompetitionServiceClient {
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = "application/json")
     List<Competition> getAllCompetition();
 
+    /**
+     * Retrouve toutes les compétitions enregistrées selon un id niveau dans le service competition
+     * @param idNiveau
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = "application/json")
     List<Competition> getAllCompetitionsByIdNiveau(@RequestParam("idniveau") int idNiveau);
+
+    /**
+     * Retrouve toutes les compétitions enregistrées selon un id enseignant dans le service competition
+     * @param idEnseignant
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/", produces = "application/json")
+    List<Competition> getAllCompetitionByIdEnseignant(@RequestParam("idenseignant") int idEnseignant);
+
+    /**
+     * Retrouve toutes les compétitions enregistrées selon un id participant dans le service competition
+     * @param idParticipant
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/", produces = "application/json")
+    List<Competition> getAllCompetitionByIdParticipant(@RequestParam("idparticipant") int idParticipant);
 }

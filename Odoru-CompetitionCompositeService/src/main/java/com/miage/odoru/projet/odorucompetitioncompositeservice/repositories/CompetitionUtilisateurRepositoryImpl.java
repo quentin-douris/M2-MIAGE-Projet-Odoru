@@ -28,6 +28,10 @@ public class CompetitionUtilisateurRepositoryImpl implements CompetitionUtilisat
     @Autowired
     private OdoruUtilisateurServiceClient odoruUtilisateurServiceClient;
 
+    /**
+     * Rechercher toutes les compétitions
+     * @return
+     */
     @Override
     public Iterable<CompetitionParticipantTransient> getAllCompetitionDetail() {
         this.logger.info("Obtenir toutes les compétitions enregistrées dans le système avec le détail de leurs informations");
@@ -50,6 +54,11 @@ public class CompetitionUtilisateurRepositoryImpl implements CompetitionUtilisat
         return result;
     }
 
+    /**
+     * Rechercher toutes les compétitions selon un id niveau de compétition (filtre)
+     * @param idNiveau
+     * @return
+     */
     @Override
     public Iterable<CompetitionParticipantTransient> getAllCompetitionsDetailByIdNiveau(int idNiveau) {
         this.logger.info("Obtenir toutes les compétitions enregistrées dans le système selon leur idNiveau avec le détail de leurs informations");
@@ -71,9 +80,66 @@ public class CompetitionUtilisateurRepositoryImpl implements CompetitionUtilisat
         return result;
     }
 
+    /**
+     * Recherche toutes les compétitions selon un id enseignant (filtre)
+     * @param idEnseignant
+     * @return
+     */
+    @Override
+    public Iterable<CompetitionParticipantTransient> getAllCompetitionDetailByIdEnseignant(int idEnseignant) {
+        this.logger.info("Obtenir toutes les compétitions enregistrées dans le système pour un enseignant avec le détail des informations de la compétition.");
+
+        // Récupération de toutes les compétitions
+        this.logger.info("Demande les compétitions selon idEnseignant au service CompetitionService");
+        Iterable<Competition> competitionList = this.odoruCompetitionServiceClient.getAllCompetitionByIdEnseignant(idEnseignant);
+
+        // Variable qui va contenir notre résultat
+        List<CompetitionParticipantTransient> result = new ArrayList<>();
+
+        // Construction de l'objet CoursTransient
+        this.logger.info("Construction de la liste des CompetitionParticipantTransient.");
+        for (Iterator<Competition> competitionIterator = competitionList.iterator(); competitionIterator.hasNext();) {
+            Competition comp = competitionIterator.next();
+            result.add(this.factoryCompetitionTransient(comp));
+        }
+        this.logger.info("Construction de la liste des CompetitionParticipantTransient terminée.");
+        return result;
+    }
+
+    /**
+     * Rechercher toutes les compétitions selon un id de participant (filtre)
+     * @param idParticipant
+     * @return
+     */
+    @Override
+    public Iterable<CompetitionParticipantTransient> getAllCompetitionDetailByIdParticipant(int idParticipant) {
+        this.logger.info("Obtenir toutes les compétitions enregistrées dans le système pour un participant avec le détail des informations de la compétition.");
+
+        // Récupération de toutes les compétitions
+        this.logger.info("Demande les compétitions selon idParticipant au service CompetitionService");
+        Iterable<Competition> competitionList = this.odoruCompetitionServiceClient.getAllCompetitionByIdParticipant(idParticipant);
+
+        // Variable qui va contenir notre résultat
+        List<CompetitionParticipantTransient> result = new ArrayList<>();
+
+        // Construction de l'objet CoursTransient
+        this.logger.info("Construction de la liste des CompetitionParticipantTransient.");
+        for (Iterator<Competition> competitionIterator = competitionList.iterator(); competitionIterator.hasNext();) {
+            Competition comp = competitionIterator.next();
+            result.add(this.factoryCompetitionTransient(comp));
+        }
+        this.logger.info("Construction de la liste des CompetitionParticipantTransient terminée.");
+        return result;
+    }
+
+    /**
+     * Permet de fabriquer un objet transient
+     * @param competition
+     * @return
+     */
     private CompetitionParticipantTransient factoryCompetitionTransient(Competition competition) {
         this.logger.info("Construction de l'objet CompetitionParticipantTransient avec l'id : " + competition.getId());
-        
+
         // Initialisation du competitionParticipantTransient
         CompetitionParticipantTransient competitionParticipantTransient = new CompetitionParticipantTransient();
         competitionParticipantTransient.setId(competition.getId());
@@ -109,7 +175,7 @@ public class CompetitionUtilisateurRepositoryImpl implements CompetitionUtilisat
             participantTransient.setMail(eleve.getMail());
             participantTransient.setResultat(participant.getResultat());
 
-            // Ajout du participant transient au creneau transient courant
+            // Ajout à la liste des participants du transient
             competitionParticipantTransient.getParticipants().add(participantTransient);
         }
         return competitionParticipantTransient;

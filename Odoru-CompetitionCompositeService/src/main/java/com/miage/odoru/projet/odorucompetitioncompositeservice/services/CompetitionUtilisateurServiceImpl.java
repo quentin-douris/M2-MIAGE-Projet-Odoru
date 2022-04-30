@@ -15,13 +15,42 @@ public class CompetitionUtilisateurServiceImpl implements CompetitionUtilisateur
     @Autowired
     CompetitionUtilisateurRepository competitionUtilisateurRepository;
 
+    /**
+     * Obtenir toutes les compétitions avec des détails
+     * @return
+     */
     @Override
     public Iterable<CompetitionParticipantTransient> obtenirCompetitionDetail() {
         return this.competitionUtilisateurRepository.getAllCompetitionDetail();
     }
 
+    /**
+     * Obtenir toutes les compétitions avec des détails, selon le niveau
+     * @param idNiveau
+     * @return
+     */
     @Override
     public Iterable<CompetitionParticipantTransient> obtenirCompetitionDetailSelonNiveau(int idNiveau) {
         return this.competitionUtilisateurRepository.getAllCompetitionsDetailByIdNiveau(idNiveau);
+    }
+
+    /**
+     * Obtenir toutes les compétitions avec des détails, selon un id d'enseignant de la competition
+     * @param idEnseignant
+     * @return
+     */
+    @Override
+    public Iterable<CompetitionParticipantTransient> obtenirCompetitionDetailEnseignant(int idEnseignant) {
+        return this.competitionUtilisateurRepository.getAllCompetitionDetailByIdEnseignant(idEnseignant);
+    }
+
+    /**
+     * Obtenir toutes les compétitions avec des détails, selon un id de participant de la competition
+     * @param idParticipant
+     * @return
+     */
+    @Override
+    public Iterable<CompetitionParticipantTransient> obtenirCompetitionDetailParticipant(int idParticipant) {
+        return this.competitionUtilisateurRepository.getAllCompetitionDetailByIdParticipant(idParticipant);
     }
 }

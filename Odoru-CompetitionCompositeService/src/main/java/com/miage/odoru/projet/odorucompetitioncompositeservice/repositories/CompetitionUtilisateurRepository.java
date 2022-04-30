@@ -14,5 +14,24 @@ public interface CompetitionUtilisateurRepository {
      */
     Iterable<CompetitionParticipantTransient> getAllCompetitionDetail();
 
+    /**
+     * Rechercher toutes les compétitions avec le détail selon niveau
+     * @param idNiveau
+     * @return
+     */
     Iterable<CompetitionParticipantTransient> getAllCompetitionsDetailByIdNiveau(int idNiveau);
+
+    /**
+     * Rechercher toutes les compétitions avec le détail selon l'id enseignant
+     * @param idEnseignant
+     * @return
+     */
+    Iterable<CompetitionParticipantTransient> getAllCompetitionDetailByIdEnseignant(int idEnseignant);
+
+    /**
+     * Recherche toutes les compétitions avec le détail selon l'id participant
+     * @param idParticipant
+     * @return
+     */
+    Iterable<CompetitionParticipantTransient> getAllCompetitionDetailByIdParticipant(int idParticipant);
 }
