@@ -21,6 +21,13 @@ public interface CoursService {
     Iterable<Cours> obtenirCours();
 
     /**
+     * Retourne un cours selon son identifiant
+     * @param cours
+     * @return
+     */
+    Cours obtenirCoursById(Cours cours) throws CoursInconnuException;
+
+    /**
      * Supprime un cours du système
      * @param cours
      */

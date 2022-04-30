@@ -46,6 +46,22 @@ public class CoursRestController {
     }
 
     /**
+     * Retourne un cours selon son identifiant
+     * @param optionalCours
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Cours getOne(@PathVariable("id") Optional<Cours> optionalCours, @PathVariable("id") Long idCours) throws CoursInconnuException {
+        if(optionalCours.isEmpty()) {
+            throw new CoursInconnuException(idCours);
+        }
+
+        // Retourne le cours enregistré dans le système
+        this.logger.info("Cours : demande le cours avec l'identifiant : " + idCours);
+        return this.coursService.obtenirCoursById(optionalCours.get());
+    }
+
+    /**
      * Créer un nouveau cours dans le système
      * @param cours
      * @return

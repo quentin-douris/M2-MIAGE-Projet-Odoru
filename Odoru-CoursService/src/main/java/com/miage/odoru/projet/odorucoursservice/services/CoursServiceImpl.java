@@ -46,6 +46,21 @@ public class CoursServiceImpl implements CoursService {
     }
 
     /**
+     * Retourne un cours selon son identifiant
+     * @param cours
+     * @return
+     */
+    @Override
+    public Cours obtenirCoursById(Cours cours) throws CoursInconnuException {
+        // Recherche le cours
+        Optional<Cours> optionalCours = this.coursRepository.findById(cours.getId());
+        if(optionalCours.isEmpty()) {
+            throw new CoursInconnuException(cours.getId());
+        }
+        return optionalCours.get();
+    }
+
+    /**
      * Supprime un cours du système
      * @param cours
      */
