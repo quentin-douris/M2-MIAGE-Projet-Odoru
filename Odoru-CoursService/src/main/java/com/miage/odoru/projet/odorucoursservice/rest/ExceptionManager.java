@@ -1,8 +1,6 @@
 package com.miage.odoru.projet.odorucoursservice.rest;
 
-import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
-import com.miage.odoru.projet.odorucoursservice.exceptions.CreneauInconnuException;
-import com.miage.odoru.projet.odorucoursservice.exceptions.ParticipantDejaInscritException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -55,6 +53,36 @@ public class ExceptionManager {
             ParticipantDejaInscritException participantDejaInscritException)
     {
         return new ResponseEntity<>(participantDejaInscritException.getMessage(),
+                HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Gestionnaire de l'exception PlanificationCreneauException.
+     * @param request
+     * @param planificationCreneauException
+     * @return
+     */
+    @ExceptionHandler(PlanificationCreneauException.class)
+    public ResponseEntity<String> managePlanificationCreneauException(
+            HttpServletRequest request,
+            PlanificationCreneauException planificationCreneauException)
+    {
+        return new ResponseEntity<>(planificationCreneauException.getMessage(),
+                HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Gestionnaire de l'exception EnseignantInapteException.
+     * @param request
+     * @param enseignantInapteException
+     * @return
+     */
+    @ExceptionHandler(EnseignantInapteException.class)
+    public ResponseEntity<String> manageEnseignantInapteException(
+            HttpServletRequest request,
+            EnseignantInapteException enseignantInapteException)
+    {
+        return new ResponseEntity<>(enseignantInapteException.getMessage(),
                 HttpStatus.NOT_FOUND);
     }
 }
