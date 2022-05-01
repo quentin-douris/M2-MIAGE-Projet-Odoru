@@ -26,5 +26,5 @@ public interface OdoruUtilisateurServiceClient {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = "application/json")
-    Iterable<Utilisateur> getUtilisateurByIdNiveau(@RequestParam("idniveau") int idNiveau);
+    Iterable<Utilisateur> getUtilisateurByIdNiveau(@RequestParam("idNiveau") int idNiveau);
 }
