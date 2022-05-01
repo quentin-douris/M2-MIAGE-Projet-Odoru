@@ -2,6 +2,7 @@ package com.miage.odoru.projet.odorustatistiqueservice.rest;
 
 import com.miage.odoru.projet.odorustatistiqueservice.repositories.CompetitionStatistiqueRepository;
 import com.miage.odoru.projet.odorustatistiqueservice.services.CompetitionStatistiqueService;
+import com.miage.odoru.projet.odorustatistiqueservice.transientobj.CompetitionResultatTransient;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCompetitionNiveau;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursPresenceTransient;
 import feign.FeignException;
@@ -32,5 +33,18 @@ public class CompetitionStatistiqueRestController {
         // Retourne le nombre de compétition selon le niveau
         this.logger.info("Statistique : demande le nombre de compétition selon le niveau.");
         return this.competitionStatistiqueService.obtenirStatistiqueNbCompetitionPourNiveau(idNiveau);
+    }
+
+    /**
+     * Calcul le résultat d'un élève pour chacune des compétitions à laquelle il a participé
+     * @param idEleve
+     * @return
+     * @throws FeignException
+     */
+    @GetMapping("/eleve/{ideleve}")
+    public Iterable<CompetitionResultatTransient> getCompetitionResultatPourEleve(@PathVariable("ideleve") Long idEleve) throws FeignException {
+        // Retourne le résultat aux compétions
+        this.logger.info("Statistique : demande le nombre résultat obtenu pour l'élè à chacune des compétitions.");
+        return this.competitionStatistiqueService.obtenirStatistiqueCompetitionAvecResultatPourEleve(idEleve);
     }
 }

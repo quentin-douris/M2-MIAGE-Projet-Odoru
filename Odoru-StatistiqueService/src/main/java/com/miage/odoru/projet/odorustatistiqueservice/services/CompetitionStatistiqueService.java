@@ -1,5 +1,6 @@
 package com.miage.odoru.projet.odorustatistiqueservice.services;
 
+import com.miage.odoru.projet.odorustatistiqueservice.transientobj.CompetitionResultatTransient;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCompetitionNiveau;
 
 /**
@@ -12,4 +13,11 @@ public interface CompetitionStatistiqueService {
      * @return
      */
     StatistiqueCompetitionNiveau obtenirStatistiqueNbCompetitionPourNiveau(Long idNiveau);
+
+    /**
+     * Calcul les résultats obtenu par un élève pour chacune des compétitions à laquelle il a participé
+     * @param idEleve
+     * @return
+     */
+    Iterable<CompetitionResultatTransient> obtenirStatistiqueCompetitionAvecResultatPourEleve(Long idEleve);
 }

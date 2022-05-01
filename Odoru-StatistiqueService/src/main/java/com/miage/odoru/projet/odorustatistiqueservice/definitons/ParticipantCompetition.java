@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class participantCompetition implements Serializable {
+public class ParticipantCompetition implements Serializable {
     private long idEleve;
 
     private double resultat;

@@ -2,12 +2,16 @@ package com.miage.odoru.projet.odorustatistiqueservice.repositories;
 
 import com.miage.odoru.projet.odorustatistiqueservice.clients.OdoruCompetitionServiceClient;
 import com.miage.odoru.projet.odorustatistiqueservice.definitons.Competition;
-import com.miage.odoru.projet.odorustatistiqueservice.definitons.Cours;
+import com.miage.odoru.projet.odorustatistiqueservice.definitons.ParticipantCompetition;
+import com.miage.odoru.projet.odorustatistiqueservice.transientobj.CompetitionResultatTransient;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCompetitionNiveau;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe qui permet de manipuler techniquement nos objets provenant du service Compétition
@@ -44,5 +48,28 @@ public class CompetitionStatistiqueRepositoryImpl implements CompetitionStatisti
         result.setNbCompetition(nbCompetition);
 
         return result;
+    }
+
+    /**
+     * Calcul le résultat d'un élève à toutes les compétitions auxquelles il a participé
+     * @param idParticipant
+     * @return
+     */
+    @Override
+    public Iterable<CompetitionResultatTransient> obtenirResultatsCompetition(Long idParticipant) {
+        List<CompetitionResultatTransient> competitionsResultats = new ArrayList<>();
+        List<Competition> compTpm = this.odoruCompetitionServiceClient.getCompetitionByIdEleve(idParticipant);
+
+        for (Competition competition : compTpm) {
+            for (ParticipantCompetition participant : competition.getParticipants()) {
+                if (participant.getIdEleve() == idParticipant) {
+                    CompetitionResultatTransient compResult = new CompetitionResultatTransient();
+                    compResult.setIdCompetition((int) competition.getId());
+                    compResult.setResultat(participant.getResultat());
+                    competitionsResultats.add(compResult);
+                }
+            }
+        }
+        return competitionsResultats;
     }
 }

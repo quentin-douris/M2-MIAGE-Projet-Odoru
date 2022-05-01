@@ -29,5 +29,5 @@ public class Competition implements Serializable {
 
     private int idNiveau;
 
-    private List<Participant> participants = new ArrayList<>();
+    private List<ParticipantCompetition> participants = new ArrayList<>();
 }
