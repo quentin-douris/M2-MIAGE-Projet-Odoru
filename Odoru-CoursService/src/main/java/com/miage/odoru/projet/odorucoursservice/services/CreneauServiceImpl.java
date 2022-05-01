@@ -6,10 +6,12 @@ import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.entities.Participant;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.CreneauInconnuException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.EnseignantInapteException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.PlanificationCreneauException;
 import com.miage.odoru.projet.odorucoursservice.repositories.CoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -19,11 +21,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 /**
  * Service qui s'occupe de la gestion des Créneaux
  */
 @Service
 public class CreneauServiceImpl implements CreneauService {
+    @Autowired
+    MongoOperations mongoOperations;
 
     @Autowired
     CoursRepository coursRepository;
@@ -100,5 +107,49 @@ public class CreneauServiceImpl implements CreneauService {
 
         // Sauvegarde le cours dans le système
         return this.coursRepository.save(cours);
+    }
+
+    /**
+     * Obtenir un creneau de cours spécifique
+     * @param cours
+     * @param idCreneau
+     * @return
+     * @throws CoursInconnuException
+     * @throws CreneauInconnuException
+     */
+    @Override
+    public Cours obtenirCreneauCours(Cours cours, Long idCreneau) throws CoursInconnuException, CreneauInconnuException {
+        // Recherche le cours
+        Optional<Cours> optionalCours = this.coursRepository.findById(cours.getId());
+
+        // Si le cours n'est pas trouvé dans le système
+        if(optionalCours.isEmpty()) {
+            throw new CoursInconnuException(cours.getId());
+        }
+
+        // Recherche le créneau pour le cours
+        Cours resultCreneau = mongoOperations.query(Cours.class)
+                .matching(query(where("id").is(cours.getId()).and("creneaux.id").is(idCreneau)))
+                .firstValue();
+
+        if (resultCreneau == null) {
+            throw new CreneauInconnuException(cours.getId(), idCreneau);
+        }
+
+        // Objet pour le retour
+        Cours toReturn = new Cours();
+        toReturn.setId(resultCreneau.getId());
+        toReturn.setTitre(resultCreneau.getTitre());
+        toReturn.setIdNiveau(resultCreneau.getIdNiveau());
+
+        for (Iterator<Creneau> creneauIterator = resultCreneau.getCreneaux().iterator(); creneauIterator.hasNext();) {
+            Creneau creneau = creneauIterator.next();
+            if(creneau.getId() == idCreneau) {
+                // Supprime le créneau du retour
+                toReturn.getCreneaux().add(creneau);
+            }
+        }
+
+        return toReturn;
     }
 }

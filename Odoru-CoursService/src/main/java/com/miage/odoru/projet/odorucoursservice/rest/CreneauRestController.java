@@ -3,6 +3,7 @@ package com.miage.odoru.projet.odorucoursservice.rest;
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.CreneauInconnuException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.EnseignantInapteException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.PlanificationCreneauException;
 import com.miage.odoru.projet.odorucoursservice.services.CreneauService;
@@ -38,5 +39,26 @@ public class CreneauRestController {
         // Ajoute le nouveau creneau dans le système
         this.logger.info("Creneau : ajout d'un nouveau créneau pour le cours id : " + optionalCours.get().getId());
         return this.creneauService.ajouterCreneauCours(optionalCours.get(), creneau);
+    }
+
+    /**
+     * Rertrouve un créneau de cours spécifique dans le système
+     * @param optionalCours
+     * @param idCours
+     * @param idCreneau
+     * @return
+     * @throws CoursInconnuException
+     * @throws CreneauInconnuException
+     */
+    @GetMapping("/{idcreneau}")
+    public Cours getOne(@PathVariable("idcours") Optional<Cours> optionalCours, @PathVariable("idcours") Long idCours, @PathVariable("idcreneau") Long idCreneau) throws CoursInconnuException, CreneauInconnuException {
+        // Vérifie que le cours existe
+        if(optionalCours.isEmpty()) {
+            throw new CoursInconnuException(idCours);
+        }
+
+        // Recherche le créneau dans le système
+        this.logger.info("Creneau : recherche le créneau : " + idCreneau + " pour le cours : " + optionalCours.get().getId());
+        return this.creneauService.obtenirCreneauCours(optionalCours.get(), idCreneau);
     }
 }
