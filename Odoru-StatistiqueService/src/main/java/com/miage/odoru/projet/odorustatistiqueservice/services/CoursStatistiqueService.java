@@ -1,5 +1,6 @@
 package com.miage.odoru.projet.odorustatistiqueservice.services;
 
+import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursCreneauxPresence;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursEleveTransient;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursPresenceTransient;
 
@@ -20,4 +21,11 @@ public interface CoursStatistiqueService {
      * @return
      */
     StatistiqueCoursEleveTransient obtenirStatNbElevePresents(Long idCours, Long idCreneau);
+
+    /**
+     * Retourne la présence d'un élève à tous les cours pour lesquelles il est inscrit
+     * @param idEleve
+     * @return
+     */
+    Iterable<StatistiqueCoursCreneauxPresence> obtenirStatPresenceAbsenceEleve(Long idEleve);
 }

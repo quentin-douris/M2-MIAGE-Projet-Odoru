@@ -1,6 +1,7 @@
 package com.miage.odoru.projet.odorustatistiqueservice.services;
 
 import com.miage.odoru.projet.odorustatistiqueservice.repositories.CoursStatistiqueRepository;
+import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursCreneauxPresence;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursEleveTransient;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursPresenceTransient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,15 @@ public class CousStatistiqueServiceImpl implements CoursStatistiqueService {
     @Override
     public StatistiqueCoursEleveTransient obtenirStatNbElevePresents(Long idCours, Long idCreneau) {
         return this.coursStatistiqueRepository.getStatistiqueNbElevesPresent(idCours, idCreneau);
+    }
+
+    /**
+     * Retourne la présence d'un élève à tous les cours pour lesquelles il est inscrit
+     * @param idEleve
+     * @return
+     */
+    @Override
+    public Iterable<StatistiqueCoursCreneauxPresence> obtenirStatPresenceAbsenceEleve(Long idEleve) {
+        return this.coursStatistiqueRepository.getStatistiquePresenceAbsenceEleve(idEleve);
     }
 }

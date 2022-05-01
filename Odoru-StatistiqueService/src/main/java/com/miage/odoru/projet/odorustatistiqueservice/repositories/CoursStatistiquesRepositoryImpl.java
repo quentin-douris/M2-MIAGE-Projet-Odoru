@@ -6,9 +6,7 @@ import com.miage.odoru.projet.odorustatistiqueservice.definitons.Cours;
 import com.miage.odoru.projet.odorustatistiqueservice.definitons.Creneau;
 import com.miage.odoru.projet.odorustatistiqueservice.definitons.Participant;
 import com.miage.odoru.projet.odorustatistiqueservice.definitons.Utilisateur;
-import com.miage.odoru.projet.odorustatistiqueservice.transientobj.EleveTransient;
-import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursEleveTransient;
-import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursPresenceTransient;
+import com.miage.odoru.projet.odorustatistiqueservice.transientobj.*;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,5 +112,70 @@ public class CoursStatistiquesRepositoryImpl implements CoursStatistiqueReposito
         result.setNbEleve(nbEleve);
 
         return result;
+    }
+
+    /**
+     * Calcul la présence des élèves aux cours auxquels ils ont été inscrit
+     * @param idEleve
+     * @return
+     */
+    @Override
+    public Iterable<StatistiqueCoursCreneauxPresence> getStatistiquePresenceAbsenceEleve(Long idEleve) {
+        this.logger.info("Calcul la présence des élèves aux cours auxquels ils ont été inscrit pour l'élève : " + idEleve);
+
+        // Récupération du cours auprès du service cours
+        this.logger.info("Demande les cours au service CoursService");
+        Iterable<Cours> coursEleve = this.odoruCoursServiceClient.getCoursByIdEleve(idEleve);
+
+        // Variable qui va contenir le résultat
+        List<StatistiqueCoursCreneauxPresence> result = new ArrayList<>();
+
+        // Construction de l'objet CoursTransient
+        this.logger.info("Construction de la liste des CoursTransient.");
+        for (Iterator<Cours> coursIterator = coursEleve.iterator(); coursIterator.hasNext();) {
+            Cours cours = coursIterator.next();
+            StatistiqueCoursCreneauxPresence coursCreneauxPresence = new StatistiqueCoursCreneauxPresence();
+            coursCreneauxPresence.setIdNiveau(cours.getIdNiveau());
+            coursCreneauxPresence.setTitre(cours.getTitre());
+            coursCreneauxPresence.setCreneaux(new ArrayList<>());
+
+            // Construction des objets creneaux transient
+            for(Creneau creneau : cours.getCreneaux()) {
+                CreneauTransient creneauTransient = new CreneauTransient();
+                creneauTransient.setDate(creneau.getDate());
+
+                // Récupère le détail de ce créneau auprès du service cours pour vérifier la présence de l'élève
+                Cours coursCreneau = this.odoruCoursServiceClient.getOne(cours.getId(), creneau.getId());
+                for(Creneau c : coursCreneau.getCreneaux()) {
+                    if(c.getId() == creneau.getId()) {
+                        creneauTransient.setPresent(this.elevePresentCreneau(c, idEleve));
+                    }
+                }
+
+                // Ajoute le créneau
+                coursCreneauxPresence.getCreneaux().add(creneauTransient);
+            }
+
+            // Ajout de l'objet construit
+            result.add(coursCreneauxPresence);
+        }
+
+        return result;
+    }
+
+    /**
+     * Retourne la présence de l'élè sur un créneau
+     * @param creneau
+     * @param idEleve
+     * @return
+     */
+    private boolean elevePresentCreneau(Creneau creneau, Long idEleve) {
+        for(Participant participant : creneau.getParticipants()) {
+            if(participant.getIdEleve() == idEleve) {
+                return participant.isPresent();
+            }
+        }
+
+        return false;
     }
 }

@@ -1,8 +1,11 @@
 package com.miage.odoru.projet.odorustatistiqueservice.repositories;
 
+import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursCreneauxPresence;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursEleveTransient;
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursPresenceTransient;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Interface qui permet de manipuler techniquement nos objets provenant du service Cours
@@ -22,4 +25,11 @@ public interface CoursStatistiqueRepository {
      * @return
      */
     StatistiqueCoursEleveTransient getStatistiqueNbElevesPresent(Long idCours, Long idCreneau);
+
+    /**
+     * Calcul la présence des élèves aux cours auxquels ils ont été inscrit
+     * @param idEleve
+     * @return
+     */
+    Iterable<StatistiqueCoursCreneauxPresence> getStatistiquePresenceAbsenceEleve(Long idEleve);
 }
