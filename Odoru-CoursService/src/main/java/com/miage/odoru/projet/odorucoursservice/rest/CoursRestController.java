@@ -27,7 +27,7 @@ public class CoursRestController {
      * @return
      */
     @GetMapping
-    public Iterable<Cours> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant) {
+    public Iterable<Cours> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant, @RequestParam("ideleve") Optional<Integer> idEleve) {
         // Retourne les cours selon leur niveau
         if(idNiveau.isPresent()) {
             this.logger.info("Cours : demande la liste de tous les cours selon le niveau : " + idNiveau);
@@ -38,6 +38,12 @@ public class CoursRestController {
         if(idEnseignant.isPresent()) {
             this.logger.info("Cours : demande la liste de tous les créneaux de cours dispensés par l'enseignant : " + idEnseignant);
             return this.coursService.obtenirCreneauxEnseignant(idEnseignant.get());
+        }
+
+        // Retourne les cours d'un élève
+        if(idEleve.isPresent()) {
+            this.logger.info("Cours : demande la liste de tous les créneaux de cours auxquels participe l'élève : " + idEleve);
+            return this.coursService.obtenirCreneauxEleves(idEleve.get());
         }
 
         // Retourne tous les cours enregistrés dans le système

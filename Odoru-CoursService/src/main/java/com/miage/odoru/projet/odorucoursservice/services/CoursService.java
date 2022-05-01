@@ -52,4 +52,10 @@ public interface CoursService {
      */
     Iterable<Cours> obtenirCreneauxEnseignant(int idEnseignant);
 
+    /**
+     * Retourne tous les créneaux auxquels participes / est inscrit l'élève
+     * @param idEleve
+     * @return
+     */
+    Iterable<Cours> obtenirCreneauxEleves(int idEleve);
 }
