@@ -5,8 +5,6 @@ import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCo
 import com.miage.odoru.projet.odorustatistiqueservice.transientobj.StatistiqueCoursPresenceTransient;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * Interface qui permet de manipuler techniquement nos objets provenant du service Cours
  */
