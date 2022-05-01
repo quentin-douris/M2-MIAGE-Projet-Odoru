@@ -1,4 +1,4 @@
-package com.miage.odoru.projet.odorucourscompositeservice.definitions;
+package com.miage.odoru.projet.odorustatistiqueservice.definitons;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,19 +21,7 @@ public class Utilisateur implements Serializable {
 
     private String prenom;
 
-    private String mail;
-
-    private String login;
-
-    private String password;
-
-    private String ville;
-
-    private String pays;
-
     private int idType;
 
     private int idNiveau;
-
-    private boolean isInscrit;
 }

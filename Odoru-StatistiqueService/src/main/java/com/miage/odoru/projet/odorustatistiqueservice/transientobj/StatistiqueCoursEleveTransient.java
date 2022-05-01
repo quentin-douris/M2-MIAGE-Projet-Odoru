@@ -5,18 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
- * Transient object StatistiqueCoursPresence (utilisé uniquement pour la communication)
- * Permet de définir le nombre de cours avec le nombre moyen d'élève présent à ce cours.
+ * Transient object StatistiqueCoursEleve (utilisé uniquement pour la communication)
+ * Permet de définir le nombre d'élève à cours donnée avec la liste.
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatistiqueCoursPresenceTransient {
+public class StatistiqueCoursEleveTransient {
     private String titre;
 
     private int idNiveau;
 
-    private double TauxPresenceMoy;
+    private int nbEleve;
+
+    private List<EleveTransient> eleves;
 }
