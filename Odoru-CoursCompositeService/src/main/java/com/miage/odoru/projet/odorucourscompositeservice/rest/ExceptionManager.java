@@ -1,4 +1,4 @@
-package com.miage.odoru.projet.odorustatistiqueservice.rest;
+package com.miage.odoru.projet.odorucourscompositeservice.rest;
 
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
