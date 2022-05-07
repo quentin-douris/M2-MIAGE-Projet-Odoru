@@ -14,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -57,18 +55,23 @@ public class CreneauServiceImpl implements CreneauService {
         }
 
         // Vérifie que la date du créneau respect bien les 7jours entre la date de saisie et la date du créneau
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateCreneau, today = null;
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss") ;
+        Date dateconvert = null;
+
         try {
-            dateCreneau = sdf.parse(creneau.getDate());
-            today = new Date(System.currentTimeMillis());
+            dateconvert = df.parse(creneau.getDate());
         } catch(Exception ex) {
             throw new PlanificationCreneauException();
         }
 
-        // Vérifie la contrainte de 7 jours de décalage
-        long difference = ChronoUnit.DAYS.between(today.toInstant(), dateCreneau.toInstant());
-        if(difference < 6) {
+        // Conversion de la date du jour + 7
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss'Z'");
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, +7);
+        Date todateDateFuture = cal.getTime();
+        // Verif
+        if (dateconvert.before(todateDateFuture)) {
             throw new PlanificationCreneauException();
         }
 
