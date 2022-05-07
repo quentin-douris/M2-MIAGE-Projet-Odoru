@@ -2,6 +2,7 @@ package com.miage.odoru.projet.odorucourscompositeservice.rest;
 
 import com.miage.odoru.projet.odorucourscompositeservice.services.CoursUtilisateurService;
 import com.miage.odoru.projet.odorucourscompositeservice.transientobj.CoursTransient;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class CoursUtilisateurRestController {
      * @return
      */
     @GetMapping
-    public Iterable<CoursTransient> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant) {
+    public Iterable<CoursTransient> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant) throws FeignException {
         // Retourne les cours selon leur niveau avec leur détail
         if(idNiveau.isPresent()) {
             this.logger.info("CoursComposite : demande la liste de tous les cours détaillé selon le niveau : " + idNiveau);
@@ -44,5 +45,4 @@ public class CoursUtilisateurRestController {
         this.logger.info("CoursComposite : demande la liste de tous les cours détaillé.");
         return this.coursUtilisateurService.obtenirCoursDetail();
     }
-
 }

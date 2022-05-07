@@ -6,6 +6,7 @@ import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException
 import com.miage.odoru.projet.odorucoursservice.exceptions.CreneauInconnuException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.ParticipantNonInscrit;
 import com.miage.odoru.projet.odorucoursservice.services.ParticipantService;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class CoursCreneauBadgeParticipantRestController {
      * @throws BadgeInconnuException
      */
     @PutMapping
-    public void putOne(@PathVariable("idcours") Optional<Cours> optionalCours, @PathVariable("idcours") Long idCours, @PathVariable("idcreneau") Long idCreneau, @PathVariable("idbadge") Long idBadge) throws CoursInconnuException, CreneauInconnuException, ParticipantNonInscrit, BadgeInconnuException {
+    public void putOne(@PathVariable("idcours") Optional<Cours> optionalCours, @PathVariable("idcours") Long idCours, @PathVariable("idcreneau") Long idCreneau, @PathVariable("idbadge") Long idBadge) throws FeignException, CoursInconnuException, CreneauInconnuException, ParticipantNonInscrit, BadgeInconnuException {
         // Vérifie que le cours existe
         if(optionalCours.isEmpty()) {
             throw new CoursInconnuException(idCours);

@@ -27,7 +27,7 @@ public class CoursRestController {
      * @return
      */
     @GetMapping
-    public Iterable<Cours> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant) {
+    public Iterable<Cours> getAll(@RequestParam("idniveau") Optional<Integer> idNiveau, @RequestParam("idenseignant") Optional<Integer> idEnseignant, @RequestParam("ideleve") Optional<Integer> idEleve) {
         // Retourne les cours selon leur niveau
         if(idNiveau.isPresent()) {
             this.logger.info("Cours : demande la liste de tous les cours selon le niveau : " + idNiveau);
@@ -40,9 +40,31 @@ public class CoursRestController {
             return this.coursService.obtenirCreneauxEnseignant(idEnseignant.get());
         }
 
+        // Retourne les cours d'un élève
+        if(idEleve.isPresent()) {
+            this.logger.info("Cours : demande la liste de tous les créneaux de cours auxquels participe l'élève : " + idEleve);
+            return this.coursService.obtenirCreneauxEleves(idEleve.get());
+        }
+
         // Retourne tous les cours enregistrés dans le système
         this.logger.info("Cours : demande la liste de tous les cours.");
         return this.coursService.obtenirCours();
+    }
+
+    /**
+     * Retourne un cours selon son identifiant
+     * @param optionalCours
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Cours getOne(@PathVariable("id") Optional<Cours> optionalCours, @PathVariable("id") Long idCours) throws CoursInconnuException {
+        if(optionalCours.isEmpty()) {
+            throw new CoursInconnuException(idCours);
+        }
+
+        // Retourne le cours enregistré dans le système
+        this.logger.info("Cours : demande le cours avec l'identifiant : " + idCours);
+        return this.coursService.obtenirCoursById(optionalCours.get());
     }
 
     /**

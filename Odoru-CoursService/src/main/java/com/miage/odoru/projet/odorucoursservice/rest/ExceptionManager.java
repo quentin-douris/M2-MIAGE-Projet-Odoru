@@ -1,6 +1,7 @@
 package com.miage.odoru.projet.odorucoursservice.rest;
 
 import com.miage.odoru.projet.odorucoursservice.exceptions.*;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -83,6 +84,21 @@ public class ExceptionManager {
             EnseignantInapteException enseignantInapteException)
     {
         return new ResponseEntity<>(enseignantInapteException.getMessage(),
+                HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Gestionnaire de l'exception Générique pour les appels aux autres services
+     * @param request
+     * @param feignException
+     * @return
+     */
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<String> manageCoursInconnuException(
+            HttpServletRequest request,
+            FeignException feignException)
+    {
+        return new ResponseEntity<>(feignException.getMessage(),
                 HttpStatus.NOT_FOUND);
     }
 }

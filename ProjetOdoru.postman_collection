@@ -1,0 +1,924 @@
+{
+	"info": {
+		"_postman_id": "7e89261c-76a8-4358-8e2e-b89e27f2acc7",
+		"name": "Projet Odoru",
+		"description": "Projet Odoru M2 MIAGE.\n\nCette solution postman contient toutes les routes de nos différents services en passant par la Gateway.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ServiceUtilisateur",
+			"item": [
+				{
+					"name": "/utilisateurs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"TEST\",\r\n  \"prenom\": \"Dupont\",\r\n  \"mail\": \"toto.dupont@gmail.com\",\r\n  \"login\": \"TEST\",\r\n  \"password\": \"tutu123\",\r\n  \"ville\": \"Toulouse\",\r\n  \"pays\": \"France\", \r\n  \"idNiveau\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/utilisateurs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"utilisateurs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/utilisateurs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/utilisateurs?idType=1&idNiveau=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"utilisateurs"
+							],
+							"query": [
+								{
+									"key": "idType",
+									"value": "1"
+								},
+								{
+									"key": "idNiveau",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/utilisateurs/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/utilisateurs/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"utilisateurs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/utilisateurs/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"Toto\",\r\n  \"prenom\": \"Dupont\",\r\n  \"mail\": \"toto@test.com\",\r\n  \"idNiveau\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/utilisateurs/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"utilisateurs",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Routes pour le service __Utilisateur__."
+		},
+		{
+			"name": "ServiceCours",
+			"item": [
+				{
+					"name": "/cours",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titre\": \"Danse moderne\",\r\n    \"idNiveau\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/cours",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cours/{idcours}/creneau",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2022-05-01\",\r\n  \"duree\": 60,\r\n  \"idEnseignant\": 2,\r\n  \"numSalle\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/cours/3/creneau",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours",
+								"3",
+								"creneau"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "CoursInconnuException",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"date\": \"2022-06-10\",\r\n  \"duree\": 60,\r\n  \"idEnseignant\": 1,\r\n  \"numsalle\": 1,\r\n  \"participants\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1006/cours/2/creneau",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1006",
+									"path": [
+										"cours",
+										"2",
+										"creneau"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "PlanificationCreneauException",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"date\": \"2022-01-01\",\r\n  \"duree\": 60,\r\n  \"idEnseignant\": 2,\r\n  \"numSalle\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1006/cours/1/creneau",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1006",
+									"path": [
+										"cours",
+										"1",
+										"creneau"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "/cours/{idcours}/creneau/{idcreneau}/participant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idEleve\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/cours/5/creneau/1/participant",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours",
+								"5",
+								"creneau",
+								"1",
+								"participant"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "CoursInconnuException",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"idEleve\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1006/cours/999/creneau/1/participant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1006",
+									"path": [
+										"cours",
+										"999",
+										"creneau",
+										"1",
+										"participant"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "CreneauInconnuException",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"idEleve\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1006/cours/1/creneau/999/participant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1006",
+									"path": [
+										"cours",
+										"1",
+										"creneau",
+										"999",
+										"participant"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "ParticipantDejaInscritException",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"idEleve\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1006/cours/5/creneau/1/participant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1006",
+									"path": [
+										"cours",
+										"5",
+										"creneau",
+										"1",
+										"participant"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "/cours",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/cours?idniveau=1&idenseignant=1&ideleve=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours"
+							],
+							"query": [
+								{
+									"key": "idniveau",
+									"value": "1"
+								},
+								{
+									"key": "idenseignant",
+									"value": "1"
+								},
+								{
+									"key": "ideleve",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cours/{id}",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "/cours/{idcours}/creneau/{idcreneau}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/cours/1/creneau/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours",
+								"1",
+								"creneau",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cours/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/cours/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cours",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/cours",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cours/{idcours}/creneau/{idcreneau}/badge/{idbadge}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/cours/1/creneau/1/badge/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours",
+								"1",
+								"creneau",
+								"1",
+								"badge",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Routes pour le service __Cours__."
+		},
+		{
+			"name": "ServiceBadge",
+			"item": [
+				{
+					"name": "/badge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUtilisateur\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/badge",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"badge"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/badge/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/badge/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"badge",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/badge/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/badge/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"badge",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Routes pour le service __Badge__."
+		},
+		{
+			"name": "ServiceCompetition",
+			"item": [
+				{
+					"name": "/competition",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"15/05/2022 12:30:00\",\r\n  \"duree\": 60,\r\n  \"idEnseignant\": 4,\r\n  \"numSalle\": 1,\r\n  \"idNiveau\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/competition",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"competition"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/competition",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/competition",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"competition"
+							],
+							"query": [
+								{
+									"key": "idenseignant",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "idniveau",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "idparticipant",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/competition/{id}/participant/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"resultat\": 2.3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/competition/6/participant/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"competition",
+								"6",
+								"participant",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Routes pour le service __Compétition__."
+		},
+		{
+			"name": "ServiceStatistique",
+			"item": [
+				{
+					"name": "/statistique/cours/presence",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/statistique/cours/presence",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"statistique",
+								"cours",
+								"presence"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/statistique/cours/{idcours}/creneau/{idcreneau}/presence",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/statistique/cours/5/creneau/1/presence",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"statistique",
+								"cours",
+								"5",
+								"creneau",
+								"1",
+								"presence"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/statistique/cours/eleve/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/statistique/cours/eleve/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"statistique",
+								"cours",
+								"eleve",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/statistique/competition/niveau/{idniveau}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/statistique/competition/niveau/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"statistique",
+								"competition",
+								"niveau",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/statistique/competition/eleve/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/statistique/competition/eleve/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"statistique",
+								"competition",
+								"eleve",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Routes pour le service __Statistique__."
+		},
+		{
+			"name": "ServiceCoursComposite",
+			"item": [
+				{
+					"name": "/courscomposite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/courscomposite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"courscomposite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/courscomposite?idNiveau={id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/courscomposite?idniveau=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"courscomposite"
+							],
+							"query": [
+								{
+									"key": "idniveau",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/courscomposite?idEnseignant={id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/courscomposite?idenseignant=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"courscomposite"
+							],
+							"query": [
+								{
+									"key": "idenseignant",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServiceCompetitionComposite",
+			"item": [
+				{
+					"name": "/competitioncomposite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/competitioncomposite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"competitioncomposite"
+							],
+							"query": [
+								{
+									"key": "idniveau",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "idenseignant",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "idparticipant",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

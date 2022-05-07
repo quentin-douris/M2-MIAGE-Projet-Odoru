@@ -6,24 +6,29 @@ import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.entities.Participant;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.CreneauInconnuException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.EnseignantInapteException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.PlanificationCreneauException;
 import com.miage.odoru.projet.odorucoursservice.repositories.CoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * Service qui s'occupe de la gestion des Créneaux
  */
 @Service
 public class CreneauServiceImpl implements CreneauService {
+    @Autowired
+    MongoOperations mongoOperations;
 
     @Autowired
     CoursRepository coursRepository;
@@ -50,18 +55,23 @@ public class CreneauServiceImpl implements CreneauService {
         }
 
         // Vérifie que la date du créneau respect bien les 7jours entre la date de saisie et la date du créneau
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateCreneau, today = null;
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss") ;
+        Date dateconvert = null;
+
         try {
-            dateCreneau = sdf.parse(creneau.getDate());
-            today = new Date(System.currentTimeMillis());
+            dateconvert = df.parse(creneau.getDate());
         } catch(Exception ex) {
             throw new PlanificationCreneauException();
         }
 
-        // Vérifie la contrainte de 7 jours de décalage
-        long difference = ChronoUnit.DAYS.between(today.toInstant(), dateCreneau.toInstant());
-        if(difference < 6) {
+        // Conversion de la date du jour + 7
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss'Z'");
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, +7);
+        Date todateDateFuture = cal.getTime();
+        // Verif
+        if (dateconvert.before(todateDateFuture)) {
             throw new PlanificationCreneauException();
         }
 
@@ -100,5 +110,49 @@ public class CreneauServiceImpl implements CreneauService {
 
         // Sauvegarde le cours dans le système
         return this.coursRepository.save(cours);
+    }
+
+    /**
+     * Obtenir un creneau de cours spécifique
+     * @param cours
+     * @param idCreneau
+     * @return
+     * @throws CoursInconnuException
+     * @throws CreneauInconnuException
+     */
+    @Override
+    public Cours obtenirCreneauCours(Cours cours, Long idCreneau) throws CoursInconnuException, CreneauInconnuException {
+        // Recherche le cours
+        Optional<Cours> optionalCours = this.coursRepository.findById(cours.getId());
+
+        // Si le cours n'est pas trouvé dans le système
+        if(optionalCours.isEmpty()) {
+            throw new CoursInconnuException(cours.getId());
+        }
+
+        // Recherche le créneau pour le cours
+        Cours resultCreneau = mongoOperations.query(Cours.class)
+                .matching(query(where("id").is(cours.getId()).and("creneaux.id").is(idCreneau)))
+                .firstValue();
+
+        if (resultCreneau == null) {
+            throw new CreneauInconnuException(cours.getId(), idCreneau);
+        }
+
+        // Objet pour le retour
+        Cours toReturn = new Cours();
+        toReturn.setId(resultCreneau.getId());
+        toReturn.setTitre(resultCreneau.getTitre());
+        toReturn.setIdNiveau(resultCreneau.getIdNiveau());
+
+        for (Iterator<Creneau> creneauIterator = resultCreneau.getCreneaux().iterator(); creneauIterator.hasNext();) {
+            Creneau creneau = creneauIterator.next();
+            if(creneau.getId() == idCreneau) {
+                // Supprime le créneau du retour
+                toReturn.getCreneaux().add(creneau);
+            }
+        }
+
+        return toReturn;
     }
 }

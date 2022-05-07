@@ -3,6 +3,7 @@ package com.miage.odoru.projet.odorucoursservice.services;
 import com.miage.odoru.projet.odorucoursservice.entities.Cours;
 import com.miage.odoru.projet.odorucoursservice.entities.Creneau;
 import com.miage.odoru.projet.odorucoursservice.exceptions.CoursInconnuException;
+import com.miage.odoru.projet.odorucoursservice.exceptions.CreneauInconnuException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.EnseignantInapteException;
 import com.miage.odoru.projet.odorucoursservice.exceptions.PlanificationCreneauException;
 
@@ -17,4 +18,14 @@ public interface CreneauService {
      * @return
      */
     Cours ajouterCreneauCours(Cours cours, Creneau creneau) throws CoursInconnuException, PlanificationCreneauException, EnseignantInapteException;
+
+    /**
+     * Obtenir un creneau de cours spécifique
+     * @param cours
+     * @param idCreneau
+     * @return
+     * @throws CoursInconnuException
+     * @throws CreneauInconnuException
+     */
+    Cours obtenirCreneauCours(Cours cours, Long idCreneau) throws CoursInconnuException, CreneauInconnuException;
 }

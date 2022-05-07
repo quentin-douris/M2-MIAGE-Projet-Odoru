@@ -21,6 +21,13 @@ public interface CoursService {
     Iterable<Cours> obtenirCours();
 
     /**
+     * Retourne un cours selon son identifiant
+     * @param cours
+     * @return
+     */
+    Cours obtenirCoursById(Cours cours) throws CoursInconnuException;
+
+    /**
      * Supprime un cours du système
      * @param cours
      */
@@ -45,4 +52,10 @@ public interface CoursService {
      */
     Iterable<Cours> obtenirCreneauxEnseignant(int idEnseignant);
 
+    /**
+     * Retourne tous les créneaux auxquels participes / est inscrit l'élève
+     * @param idEleve
+     * @return
+     */
+    Iterable<Cours> obtenirCreneauxEleves(int idEleve);
 }
