@@ -1,10 +1,7 @@
 package com.miage.odoru.projet.odoruutilisateurservice.rest;
 
 import com.miage.odoru.projet.odoruutilisateurservice.entities.Utilisateur;
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.LoginExistantException;
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.NiveauIncorrectException;
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.TypeIncorrectException;
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.UtilisateurInconnuException;
+import com.miage.odoru.projet.odoruutilisateurservice.exceptions.*;
 import com.miage.odoru.projet.odoruutilisateurservice.services.UtilisateurService;
 import com.netflix.discovery.converters.Auto;
 import org.slf4j.Logger;
@@ -99,5 +96,28 @@ public class UtilisateurRestController {
         // Mise à jour de l'utilisateur
         this.logger.info("Utilisateur : mise à jour de l'utilisateur " + idUtilisateur );
         return this.utilisateurService.mettreAJourUtilisateur(idUtilisateur, utilisateur);
+    }
+
+
+    /**
+     * Méthode permettant d'authentifier un utilisateur selon son login et mot de passe
+     * @param utilisateur
+     * @return
+     * @throws UtilisateurLoginException
+     * @throws UtilisateurInconnuException
+     */
+    @GetMapping("/auth")
+    public Utilisateur getAuth(@RequestBody Utilisateur utilisateur) throws UtilisateurLoginException, UtilisateurInconnuException {
+        // Cherche l'utilisateur
+        Utilisateur utilisateurRecherche = this.utilisateurService.obtenirUtilisateurSelonLogin(utilisateur.getLogin());
+        if (utilisateurRecherche == null) {
+            throw new UtilisateurInconnuException((long) -1);
+        }
+        if (utilisateurRecherche.getPassword().equals(utilisateur.getPassword())) {
+            this.logger.info("Utilisateur : utilisateur avec l'identifiant " + utilisateurRecherche.getLogin() + "trouvé");
+            return utilisateurRecherche;
+        }
+        this.logger.info("Utilisateur : utilisateur avec l'identifiant " + utilisateur.getLogin() + "n'a pas été trouvé");
+        throw new UtilisateurLoginException(utilisateur.getLogin());
     }
 }

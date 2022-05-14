@@ -1,9 +1,6 @@
 package com.miage.odoru.projet.odoruutilisateurservice.rest;
 
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.LoginExistantException;
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.NiveauIncorrectException;
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.TypeIncorrectException;
-import com.miage.odoru.projet.odoruutilisateurservice.exceptions.UtilisateurInconnuException;
+import com.miage.odoru.projet.odoruutilisateurservice.exceptions.*;
 import org.bouncycastle.crypto.util.DERMacData;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +69,21 @@ public class ExceptionManager {
             TypeIncorrectException typeIncorrectException)
     {
         return new ResponseEntity<>(typeIncorrectException.getMessage(),
+                HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Méthode permettant de gérer l'exception utilisateur login
+     * @param request
+     * @param utilisateurLoginException
+     * @return
+     */
+    @ExceptionHandler(UtilisateurLoginException.class)
+    public ResponseEntity<String> UtilisateurLoginException(
+            HttpServletRequest request,
+            UtilisateurLoginException utilisateurLoginException)
+    {
+        return new ResponseEntity<>(utilisateurLoginException.getMessage(),
                 HttpStatus.NOT_FOUND);
     }
 
