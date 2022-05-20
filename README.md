@@ -26,7 +26,7 @@ Pour réaliser ce projet avec une architecture micro-service, nous avons dévelo
 
 ## Documentation API
 
-Swagger disponible à l'URL suivante : https://app.swaggerhub.com/apis/christian.michielan/Odoru/1.0.0 
+Swagger disponible à l'URL suivante : https://app.swaggerhub.com/apis-docs/christian.michielan/Odoru/1.0.0 
 
 ## Vidéo de démonstration
 
