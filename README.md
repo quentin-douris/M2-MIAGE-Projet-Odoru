@@ -1,6 +1,6 @@
 # Projet Application en mode Service - Odoru
 
-Ce projet à pour objectif de concevoir et développer une plateforme complète dotée d’un
+Ce projet a pour objectif de concevoir et développer une plateforme complète dotée d’un
 architecture micro-services pour la gestion d’un club de danse rythmique.
 
 La plateforme « Odoru » permet au club de gérer ses membres, de planifier des cours, des
