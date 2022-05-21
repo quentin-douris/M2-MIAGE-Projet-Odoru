@@ -13,7 +13,7 @@ intervenants et de gérer l’assiduité des membres du club aux différents cou
 ## Description des projets
 
 Pour réaliser ce projet avec une architecture micro-service, nous avons développé et déployé 8 projets :
-* __API-Gatway__ : Service qui offre une interface pour intéragir commune pour interragir avec les autres services.
+* __API-Gatway__ : Service qui offre une interface commune pour interragir avec les autres services.
 * __Annuaire__ : Service qui enregistre les différents micro-services au sein d'un annuaire Eureka Server.
 * __BadgeService__ : Service qui s'occupe de la gestion des badges.
 * __CompetitionService__ : Service qui s'occupe de la gestion des compétions.
