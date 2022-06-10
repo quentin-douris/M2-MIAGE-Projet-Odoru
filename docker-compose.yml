@@ -32,6 +32,33 @@ services:
     environment:
       WAIT_HOSTS: odoru_annuaire:1111 # Attente demarrage service Annuaire (attente 30s MAX)
   
+  # Micro-service API Gateway
+  odoru-apigateway:
+    build:
+      context: Odoru-ApiGateway
+      dockerfile: Dockerfile
+    image: Odoru-APIGatway:0.0.1
+    ports:
+      - "1006:1006" # Exposition port 1006 API Gateway
+    restart: "no" 
+    container_name: odoru_apigateway
+    depends_on: 
+      - odoru-configserver
+      - odoru-badgeservice
+      - odoru-coursservice
+      - odoru-competitionservice
+      - odoru-utilisateurservice
+      - odoru-statistiqueservice
+      - odoru-courscompositeservice
+      - odoru-competitioncompositeservice
+    networks: 
+      - backend
+    environment:
+    # TODO : Modifier le nom des containers
+      WAIT_HOSTS: odoru_configserver:2222, bnkmongo:27017, bnkcompteservice:10021, bnkclientservice:10011, bnkclientservice:10031  # Attente demarrage services (attente 30s MAX)
+
+    # Micro-service Utilisateur
+    odoru-utilisateurservice:
 
 
 
