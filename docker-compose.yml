@@ -4,6 +4,10 @@ version: '3.8'
 
 # Define services
 services:
+  #####################
+  #   CONFIGURATION   #
+  #####################
+
   # Annuaire Eureka
   odoru-annuaire:
     build:
@@ -17,59 +21,9 @@ services:
     networks:
       - backend
   
-  # Serveur de configuration
-  odoru-configserver:
-    build:
-      context: Odoru-ConfigServer
-      dockerfile: Dockerfile
-    image: Odoru-ConfigServer:0.0.1
-    restart: "no" 
-    depends_on: 
-      - odoru-annuaire
-    container_name: odoru_configserver
-    networks: 
-      - backend
-    environment:
-      WAIT_HOSTS: odoru_annuaire:1111 # Attente demarrage service Annuaire (attente 30s MAX)
-  
-  # Micro-service API Gateway
-  odoru-apigateway:
-    build:
-      context: Odoru-ApiGateway
-      dockerfile: Dockerfile
-    image: Odoru-APIGatway:0.0.1
-    ports:
-      - "1006:1006" # Exposition port 1006 API Gateway
-    restart: "no" 
-    container_name: odoru_apigateway
-    depends_on: 
-      - odoru-configserver
-      - odoru-badgeservice
-      - odoru-coursservice
-      - odoru-competitionservice
-      - odoru-utilisateurservice
-      - odoru-statistiqueservice
-      - odoru-courscompositeservice
-      - odoru-competitioncompositeservice
-    networks: 
-      - backend
-    environment:
-    # TODO : Modifier le nom des containers
-      WAIT_HOSTS: odoru_configserver:2222, bnkmongo:27017, bnkcompteservice:10021, bnkclientservice:10011, bnkclientservice:10031  # Attente demarrage services (attente 30s MAX)
-
-    # Micro-service Utilisateur
-    odoru-utilisateurservice:
-
-
-
-  #################
-  #   SERVICES    #
-  #################
-
-
-
-
-
+  ###################
+  #    MONITORING   #
+  ###################
 
   # ZipKin
   zipkin:
@@ -99,7 +53,7 @@ services:
   #################
 
   # Database ServiceUtilisateur (Mysql)
-  mysql_utilisateur:
+  mysql-utilisateur:
     image: mysql:latest
     ports:
       - "3308:3306"
@@ -114,7 +68,7 @@ services:
       - backutilisateur
 
   # Database ServiceBadge (Mysql)
-  mysql_badge:
+  mysql-badge:
     image: mysql:latest
     ports:
       - "3309:3306"
@@ -129,7 +83,7 @@ services:
       - backbadge
 
   # Database ServiceCours (Mongo)
-  mongo_cours:
+  mongo-cours:
     image: mongo
     ports:
       - "27017:27017" # host is first, container is second.
@@ -145,7 +99,7 @@ services:
       - backcours
 
   # Database ServiceCompetition (Mongo)
-  mongo_competition:
+  mongo-competition:
     image: mongo
     ports:
       - "27018:27017" # host is first, container is second.
