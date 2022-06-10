@@ -17,6 +17,21 @@ services:
     networks:
       - backend
   
+  # Serveur de configuration
+  odoru-configserver:
+    build:
+      context: Odoru-ConfigServer
+      dockerfile: Dockerfile
+    image: Odoru-ConfigServer:0.0.1
+    restart: "no" 
+    depends_on: 
+      - odoru-annuaire
+    container_name: odoru_configserver
+    networks: 
+      - backend
+    environment:
+      WAIT_HOSTS: odoru_annuaire:1111 # Attente demarrage service Annuaire (attente 30s MAX)
+  
 
 
 
