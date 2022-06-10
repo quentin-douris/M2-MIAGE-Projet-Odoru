@@ -96,17 +96,19 @@ public class CoursStatistiquesRepositoryImpl implements CoursStatistiqueReposito
         int nbEleve = 0;
 
         for(Creneau creneau : cours.getCreneaux()) {
-            nbEleve = creneau.getParticipants().size();
             for(Participant participant : creneau.getParticipants()) {
-                Utilisateur utilisateur = this.odoruUtilisateurServiceClient.getUtilisateur(participant.getIdEleve());
-                EleveTransient eleve = new EleveTransient();
-                eleve.setId(utilisateur.getId());
-                eleve.setNom(utilisateur.getNom());
-                eleve.setPrenom(utilisateur.getPrenom());
-                eleve.setPrensent(participant.isPresent());
+                if(participant.isPresent()) {
+                    nbEleve++;
+                    Utilisateur utilisateur = this.odoruUtilisateurServiceClient.getUtilisateur(participant.getIdEleve());
+                    EleveTransient eleve = new EleveTransient();
+                    eleve.setId(utilisateur.getId());
+                    eleve.setNom(utilisateur.getNom());
+                    eleve.setPrenom(utilisateur.getPrenom());
+                    eleve.setPresent(participant.isPresent());
 
-                // Ajoute l'élève au cours
-                result.getEleves().add(eleve);
+                    // Ajoute l'élève au cours
+                    result.getEleves().add(eleve);
+                }
             }
         }
         result.setNbEleve(nbEleve);
