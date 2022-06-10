@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7e89261c-76a8-4358-8e2e-b89e27f2acc7",
+		"_postman_id": "1dd4ca56-407c-45ce-a628-e2faea5074c7",
 		"name": "Projet Odoru",
 		"description": "Projet Odoru M2 MIAGE.\n\nCette solution postman contient toutes les routes de nos différents services en passant par la Gateway.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -43,7 +43,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1006/utilisateurs?idType=1&idNiveau=1",
+							"raw": "http://localhost:1006/utilisateurs",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -55,11 +55,13 @@
 							"query": [
 								{
 									"key": "idType",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "idNiveau",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -93,7 +95,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nom\": \"Toto\",\r\n  \"prenom\": \"Dupont\",\r\n  \"mail\": \"toto@test.com\",\r\n  \"idNiveau\":3\r\n}",
+							"raw": "{\r\n  \"nom\": \"Toto\",\r\n  \"prenom\": \"Dupont\",\r\n  \"mail\": \"toto@test.com\",\r\n  \"login\": \"toto31\",\r\n  \"password\": \"tutu123\",\r\n  \"ville\": \"Toulouse\",\r\n  \"pays\": \"France\",\r\n  \"idNiveau\": 3,\r\n  \"idType\": 3,\r\n  \"inscrit\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -110,6 +112,38 @@
 							"path": [
 								"utilisateurs",
 								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/utilisateurs/auth",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"TEST\",\r\n    \"password\": \"tutu123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1006/utilisateurs/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"utilisateurs",
+								"auth"
 							]
 						}
 					},
@@ -156,7 +190,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"date\": \"2022-05-01\",\r\n  \"duree\": 60,\r\n  \"idEnseignant\": 2,\r\n  \"numSalle\": 1\r\n}",
+							"raw": "{\r\n  \"date\": \"30/07/2022 12:30:00\",\r\n  \"duree\": 60,\r\n  \"idEnseignant\": 2,\r\n  \"numSalle\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,7 +198,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:1006/cours/3/creneau",
+							"raw": "http://localhost:1006/cours/1/creneau",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -172,7 +206,7 @@
 							"port": "1006",
 							"path": [
 								"cours",
-								"3",
+								"1",
 								"creneau"
 							]
 						}
@@ -206,10 +240,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						},
 						{
 							"name": "PlanificationCreneauException",
@@ -239,10 +273,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -253,7 +287,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"idEleve\": 1\r\n}",
+							"raw": "{\r\n  \"idEleve\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -261,7 +295,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:1006/cours/5/creneau/1/participant",
+							"raw": "http://localhost:1006/cours/1/creneau/1/participant",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -269,7 +303,7 @@
 							"port": "1006",
 							"path": [
 								"cours",
-								"5",
+								"1",
 								"creneau",
 								"1",
 								"participant"
@@ -277,41 +311,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "CoursInconnuException",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"idEleve\": 1\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:1006/cours/999/creneau/1/participant",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "1006",
-									"path": [
-										"cours",
-										"999",
-										"creneau",
-										"1",
-										"participant"
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						},
 						{
 							"name": "CreneauInconnuException",
 							"originalRequest": {
@@ -342,10 +341,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						},
 						{
 							"name": "ParticipantDejaInscritException",
@@ -377,10 +376,45 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
+						},
+						{
+							"name": "CoursInconnuException",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"idEleve\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1006/cours/999/creneau/1/participant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1006",
+									"path": [
+										"cours",
+										"999",
+										"creneau",
+										"1",
+										"participant"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
 						}
 					]
 				},
@@ -390,7 +424,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1006/cours?idniveau=1&idenseignant=1&ideleve=1",
+							"raw": "http://localhost:1006/cours",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -402,15 +436,18 @@
 							"query": [
 								{
 									"key": "idniveau",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "idenseignant",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "ideleve",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -421,7 +458,19 @@
 					"name": "/cours/{id}",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1006/cours/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1006",
+							"path": [
+								"cours",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -822,55 +871,17 @@
 							"port": "1006",
 							"path": [
 								"courscomposite"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/courscomposite?idNiveau={id}",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:1006/courscomposite?idniveau=0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "1006",
-							"path": [
-								"courscomposite"
 							],
 							"query": [
 								{
 									"key": "idniveau",
-									"value": "0"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/courscomposite?idEnseignant={id}",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:1006/courscomposite?idenseignant=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "1006",
-							"path": [
-								"courscomposite"
-							],
-							"query": [
+									"value": "1",
+									"disabled": true
+								},
 								{
 									"key": "idenseignant",
-									"value": "1"
+									"value": "2",
+									"disabled": true
 								}
 							]
 						}

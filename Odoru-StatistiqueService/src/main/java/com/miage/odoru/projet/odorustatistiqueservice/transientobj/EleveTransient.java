@@ -20,5 +20,5 @@ public class EleveTransient {
 
     private String prenom;
 
-    private boolean isPrensent;
+    private boolean isPresent;
 }
