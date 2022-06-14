@@ -30,7 +30,7 @@ Swagger disponible à l'URL suivante : https://app.swaggerhub.com/apis-docs/chri
 
 ## Vidéo de démonstration
 
-Une présentation du projet est disponible à l'url suivante :
+Une présentation du projet est disponible à l'url suivante : https://youtu.be/yLuFsjBxark
 
 ## Exécuter le projet
 
