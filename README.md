@@ -6,6 +6,8 @@ architecture micro-services pour la gestion d’un club de danse rythmique.
 La plateforme « Odoru » permet au club de gérer ses membres, de planifier des cours, des
 intervenants et de gérer l’assiduité des membres du club aux différents cours.
 
+Le dossier de conception est présent à la racine de ce répertoire : DOSSIER_CONCEPTION_DOURIS_LE_MICHIELAN.pdf
+
 ## Architecture micro-services
 
 ![Schéma d'architecture](https://user-images.githubusercontent.com/48246043/169605387-334b67ad-07db-41d1-975b-8fb761e07112.png)
@@ -27,6 +29,8 @@ Pour réaliser ce projet avec une architecture micro-service, nous avons dévelo
 ## Documentation API
 
 Swagger disponible à l'URL suivante : https://app.swaggerhub.com/apis-docs/christian.michielan/Odoru/1.0.0 
+
+Vous trouverez à la racine de ce repertoire la collection Postman : Projet Odoru.postman_collection.json
 
 ## Vidéo de démonstration
 
