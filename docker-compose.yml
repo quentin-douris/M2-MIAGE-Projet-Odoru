@@ -3,24 +3,7 @@
 version: '3.8'
 
 # Define services
-services:
-  #####################
-  #   CONFIGURATION   #
-  #####################
-
-  # Annuaire Eureka
-  odoru-annuaire:
-    build:
-      context: Odoru-Annuaire # Répertoire (dans répertoire courant) contenant le dockerfile
-      dockerfile: Dockerfile
-    image: odoru-annuaire:0.0.1 # Pour placer le TAG de version sur le nom de l'image
-    ports:
-      - "1111:1111" # Exposition port 1111 du conteneur Annuaire vers 1111 de l'hôte.
-    restart: always 
-    container_name: odoru_annuaire
-    networks:
-      - backend
-  
+services:  
   ###################
   #    MONITORING   #
   ###################
@@ -43,8 +26,6 @@ services:
       - "9090:9090"
     restart: "no" 
     container_name: odoru_prometheus
-    depends_on: 
-      - odoru-annuaire
     networks: 
       - backend
 
